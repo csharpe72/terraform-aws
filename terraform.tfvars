@@ -1,3 +1,6 @@
+#access_ip = "96.245.57.14"
 access_ip = "0.0.0.0/0"
-
+dbname = "rancher"
+dbuser = "bobby"
+dbpassword = "abcd1234"
 #access_ip = "96.245.57.14"
