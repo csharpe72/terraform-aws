@@ -25,3 +25,30 @@ module "database" {
   db_subnet_group_name   = module.networking.db_subnet_group_name[0]
   vpc_security_group_ids = module.networking.db_security_group
 }
+
+module "loadbalancing" {
+  source                 = "./loadbalancing"
+  public_sg              = module.networking.public_sg
+  public_subnets         = module.networking.public_subnets
+  tg_port                = 80
+  tg_protocol            = "HTTP"
+  vpc_id                 = module.networking.vpc_id
+  lb_healthy_threshold   = 2
+  lb_unhealthy_threshold = 2
+  lb_timeout             = 3
+  lb_interval            = 30
+  listener_port          = 80
+  listener_protocol      = "HTTP"
+}
+
+module "compute" {
+  source         = "./compute"
+  public_sg      = module.networking.public_sg
+  instance_count = 1
+  instance_type  = "t3.micro"
+  public_subnets = module.networking.public_subnets
+  volume_size    = 10
+  key_name = "mtckey"
+  public_key_path = "/Users/csharpe72/.ssh/eks-demo.pem.pub"
+  user_data_path = "${path.root}/userdata.tpl"
+}
