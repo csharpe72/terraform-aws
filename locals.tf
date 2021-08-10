@@ -14,9 +14,22 @@ locals {
           protocol    = "tcp"
           cidr_blocks = [var.access_ip]
         }
+        # Below will open all ports/all protocols
+        open = {
+          from        = 0
+          to          = 0
+          protocol    = -1
+          cidr_blocks = [var.access_ip]
+        }
         http = {
           from        = 80
           to          = 80
+          protocol    = "tcp"
+          cidr_blocks = ["0.0.0.0/0"]
+        }
+        nginx = {
+          from        = 8000
+          to          = 8000
           protocol    = "tcp"
           cidr_blocks = ["0.0.0.0/0"]
         }
